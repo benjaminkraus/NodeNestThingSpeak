@@ -40,21 +40,26 @@ var params = 'client_id=' + settings.client_id +
 var http = require('https');
 
 var opts = {
-      host: 'api.home.nest.com',
-      port: '443',
-      path: '/oauth2/access_token',
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': params.length
-      }
-  };
+    host: 'api.home.nest.com',
+    port: '443',
+    path: '/oauth2/access_token',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': params.length
+    }
+};
 
 var req = http.request(opts, function(response) {
+    if (response.statusCode != 200 && response.statusCode != 400) {
+        console.error("An error occurred while contacting the Nest authentication server.")
+        console.error("HTTP status code " + response.statusCode);
+    }
+
     var res_data = '';
     response.on('data', function(chunk) {
         res_data += chunk;
-   });
+    });
     response.on('end', function() {
         var data = JSON.parse(res_data);
         if (data.error) {
@@ -74,7 +79,7 @@ var req = http.request(opts, function(response) {
 });
 
 req.on('error', function(e) {
-  console.log("Error: " + e.message);
+    console.error("Error: " + e.message);
 });
 
 // Send the POST request
