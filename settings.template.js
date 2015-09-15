@@ -89,6 +89,6 @@ modules.exports.ThingSpeak = {
  *
  * Use this command to run nodeNestThingSpeak.js:
 
-$ node nodeNestThingSpeak.js
+$ node nodeNestThingSpeak.js &
 
 */
